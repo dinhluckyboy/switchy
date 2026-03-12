@@ -1,0 +1,17 @@
+{
+  "name": "switchy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify": "terser src/switchy.js -o switchy.min.js && csso src/switchy.css -o switchy.min.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "csso-cli": "^4.0.2",
+    "terser": "^5.46.0"
+  }
+}
