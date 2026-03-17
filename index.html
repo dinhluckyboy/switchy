@@ -18,7 +18,24 @@
       <p id="tab1">Content tab 1</p>
       <p id="tab2">Content tab 2</p>
       <p id="tab3">Content tab 3</p>
+
+      <ul id="tabs2">
+        <li><a href="#tab21">tab21</a></li>
+        <li><a href="#tab22">tab22</a></li>
+        <li><a href="#tab23">tab23</a></li>
+      </ul>
+      <!-- panels  -->
+      <p id="tab21">Content tab 21</p>
+      <p id="tab22">Content tab 22</p>
+      <p id="tab23">Content tab 23</p>
     </main>
     <script src="./src/switchy.js"></script>
+    <script>
+      const tabs = new Switchy("#tabs", {
+        //   remember: false,
+      });
+
+      const tabs2 = new Switchy("#tabs2");
+    </script>
   </body>
 </html>

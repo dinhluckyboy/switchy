@@ -1,4 +1,4 @@
-function Switchy(selector) {
+function Switchy(selector, option) {
   this._container = document.querySelector(selector); // set container tabs
   if (!this._container) {
     console.error(`${selector} not found`);
@@ -18,6 +18,13 @@ function Switchy(selector) {
     return;
   } // check panel.length
 
+  this._opt = Object.assign(
+    {
+      remember: true,
+    },
+    option
+  );
+
   this._originalHTML = this._container.innerHTML;
 
   this._init();
@@ -26,20 +33,32 @@ function Switchy(selector) {
 }
 
 Switchy.prototype._init = function () {
-  const tabActive = this._tabs[0]; // init tab active
-  this._activeTab(tabActive);
+  //   const saveTab = location.hash;
+  //   const tabActive = saveTab
+  //     ? this._tabs.find((tab) => tab.getAttribute("href") === saveTab) ||
+  //       this._tabs[0]
+  //     : this._tabs[0];
+
+  const saveTab = location.hash;
+  const tabActive =
+    this._opt.remember && saveTab
+      ? this._tabs.find((tab) => tab.getAttribute("href") === saveTab) ||
+        this._tabs[0]
+      : this._tabs[0];
+
+  this._activateTab(tabActive);
 };
 
 Switchy.prototype._handleTabClick = function () {
   this._tabs.forEach((tab) => {
     tab.onclick = (e) => {
       e.preventDefault();
-      this._activeTab(tab);
+      this._activateTab(tab);
     };
   }); // handle tab click
 };
 
-Switchy.prototype._activeTab = function (elementTab) {
+Switchy.prototype._activateTab = function (elementTab) {
   this._tabs.forEach((tab) => {
     if (tab.closest("li").classList.contains("tab--active")) {
       tab.closest("li").classList.remove("tab--active");
@@ -52,6 +71,11 @@ Switchy.prototype._activeTab = function (elementTab) {
   }); // hidden all panels
   const panelActive = document.querySelector(elementTab.getAttribute("href"));
   panelActive.hidden = false; // show panel
+
+  // save tab reload
+  if (this._opt.remember) {
+    history.replaceState(null, null, elementTab.getAttribute("href"));
+  }
 };
 
 Switchy.prototype.switch = function (input) {
@@ -72,7 +96,7 @@ Switchy.prototype.switch = function (input) {
     return;
   }
 
-  this._activeTab(tabToActive);
+  this._activateTab(tabToActive);
 };
 
 Switchy.prototype.destroy = function () {
@@ -82,5 +106,3 @@ Switchy.prototype.destroy = function () {
   this._tabs = null;
   this._panels = null;
 };
-
-const tabs = new Switchy("#tabs");
