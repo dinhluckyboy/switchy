@@ -1,15 +1,15 @@
 function Switchy(selector) {
-  const container = document.querySelector(selector); // set container tabs
-  if (!container) {
+  this._container = document.querySelector(selector); // set container tabs
+  if (!this._container) {
     console.error(`${selector} not found`);
     return;
   } // check selector
 
-  this._tabs = Array.from(container.querySelectorAll(" li a")); //  tabs list
+  this._tabs = Array.from(this._container.querySelectorAll(" li a")); //  tabs list
 
   this._panels = this._tabs
     .map((tab) => {
-      return this._getPanelActive(tab);
+      return document.querySelector(tab.getAttribute("href"));
     })
     .filter(Boolean); // panels list
 
@@ -18,6 +18,8 @@ function Switchy(selector) {
     return;
   } // check panel.length
 
+  this._originalHTML = this._container.innerHTML;
+
   this._init();
 
   this._handleTabClick(); // handle tab click
@@ -25,68 +27,60 @@ function Switchy(selector) {
 
 Switchy.prototype._init = function () {
   const tabActive = this._tabs[0]; // init tab active
-  this._removeTabActive(); // remove all class tab--active
-  this._activeTab(tabActive); // set tab-active
-
-  const panelActive = this._panels[0]; // init panel active
-  this._hiddenPanels(); // hidden all panels
-  this._showPanel(panelActive); // show panel
+  this._activeTab(tabActive);
 };
 
 Switchy.prototype._handleTabClick = function () {
   this._tabs.forEach((tab) => {
     tab.onclick = (e) => {
       e.preventDefault();
-
-      this._removeTabActive();
       this._activeTab(tab);
-
-      this._hiddenPanels();
-      this._showPanel(this._getPanelActive(tab));
     };
   }); // handle tab click
 };
 
-Switchy.prototype._removeTabActive = function () {
+Switchy.prototype._activeTab = function (elementTab) {
   this._tabs.forEach((tab) => {
     if (tab.closest("li").classList.contains("tab--active")) {
       tab.closest("li").classList.remove("tab--active");
     }
   }); // remove all class tab--active
-};
+  elementTab.closest("li").classList.add("tab--active"); // add class active
 
-Switchy.prototype._hiddenPanels = function () {
   this._panels.forEach((panel) => {
     panel.hidden = true;
   }); // hidden all panels
+  const panelActive = document.querySelector(elementTab.getAttribute("href"));
+  panelActive.hidden = false; // show panel
 };
-
-Switchy.prototype._activeTab = function (elementTab) {
-  elementTab.closest("li").classList.add("tab--active");
-}; // add class tab-active
-
-Switchy.prototype._showPanel = function (elementPanel) {
-  elementPanel.hidden = false;
-}; // show panel
-
-Switchy.prototype._getPanelActive = function (elementTab) {
-  return document.querySelector(elementTab.getAttribute("href"));
-}; // get panel active for tab
 
 Switchy.prototype.switch = function (input) {
   // input is  elementTab or selectorPanel
+  let tabToActive = null;
   if (typeof input === "string") {
-    // selector panel
-    const panelCurrent = document.querySelector(input);
-    if (!this._panels.includes(panelCurrent)) {
+    tabToActive = this._tabs.find((tab) => tab.getAttribute("href") === input);
+    if (!tabToActive) {
       console.error(`${input} does not exits`);
       return;
     }
-    this._hiddenPanels();
-    panelCurrent.hidden = false;
+  } else if (this._tabs.includes(input)) {
+    tabToActive = input;
   }
 
-  //   console.log("handle...");
+  if (!tabToActive) {
+    console.error(`${input} does not exits`);
+    return;
+  }
+
+  this._activeTab(tabToActive);
+};
+
+Switchy.prototype.destroy = function () {
+  this._container.innerHTML = this._originalHTML;
+  this._panels.forEach((panel) => (panel.hidden = false)); // hidden all panels
+  this._container = null;
+  this._tabs = null;
+  this._panels = null;
 };
 
 const tabs = new Switchy("#tabs");
