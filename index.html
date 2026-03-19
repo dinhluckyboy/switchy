@@ -33,9 +33,14 @@
     <script>
       const tabs = new Switchy("#tabs", {
         //   remember: false,
+        onChange: () => {
+          console.log("tabs change");
+        },
       });
 
-      const tabs2 = new Switchy("#tabs2");
+      const tabs2 = new Switchy("#tabs2", {
+        // remember: false,
+      });
     </script>
   </body>
 </html>

@@ -18,14 +18,19 @@ function Switchy(selector, option) {
     return;
   } // check panel.length
 
+  this._selector = selector;
+
   this._opt = Object.assign(
     {
       remember: true,
+      //   onChange
     },
     option
   );
 
   this._originalHTML = this._container.innerHTML;
+
+  this._searchParams = new URLSearchParams(location.search);
 
   this._init();
 
@@ -33,17 +38,15 @@ function Switchy(selector, option) {
 }
 
 Switchy.prototype._init = function () {
-  //   const saveTab = location.hash;
-  //   const tabActive = saveTab
-  //     ? this._tabs.find((tab) => tab.getAttribute("href") === saveTab) ||
-  //       this._tabs[0]
-  //     : this._tabs[0];
-
-  const saveTab = location.hash;
+  const valueOfTab = this._searchParams.get(
+    this._selector.replace(/[^a-zA-Z0-9]/g, "")
+  );
   const tabActive =
-    this._opt.remember && saveTab
-      ? this._tabs.find((tab) => tab.getAttribute("href") === saveTab) ||
-        this._tabs[0]
+    this._opt.remember && valueOfTab
+      ? this._tabs.find(
+          (tab) =>
+            tab.getAttribute("href").replace(/[^a-zA-Z0-9]/g, "") === valueOfTab
+        ) || this._tabs[0]
       : this._tabs[0];
 
   this._activateTab(tabActive);
@@ -74,7 +77,18 @@ Switchy.prototype._activateTab = function (elementTab) {
 
   // save tab reload
   if (this._opt.remember) {
-    history.replaceState(null, null, elementTab.getAttribute("href"));
+    this._searchParams = new URLSearchParams(location.search);
+    this._searchParams.set(
+      this._selector.replace(/[^a-zA-Z0-9]/g, ""),
+      elementTab.getAttribute("href").replace(/[^a-zA-Z0-9]/g, "")
+    );
+    console.log(decodeURIComponent(this._searchParams.toString()));
+    history.replaceState(null, "", `?${this._searchParams.toString()}`);
+  }
+
+  // onChange
+  if (typeof this._opt.onChange === "function") {
+    this._opt.onChange();
   }
 };
 
