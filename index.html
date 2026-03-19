@@ -33,8 +33,8 @@
     <script>
       const tabs = new Switchy("#tabs", {
         //   remember: false,
-        onChange: () => {
-          console.log("tabs change");
+        onChange: function (data) {
+          console.log(data);
         },
       });
 
