@@ -52,7 +52,7 @@ Switchy.prototype._init = function () {
 
   this._currentTab = tabActive;
 
-  this._activateTab(tabActive, false);
+  this._activateTab(tabActive, false, false);
 };
 
 Switchy.prototype._handleTabClick = function () {
@@ -64,7 +64,11 @@ Switchy.prototype._handleTabClick = function () {
   }); // handle tab click
 };
 
-Switchy.prototype._activateTab = function (elementTab, triggerOnchange = true) {
+Switchy.prototype._activateTab = function (
+  elementTab,
+  triggerOnchange = true,
+  updateURL = this._opt.remember
+) {
   this._tabs.forEach((tab) => {
     if (tab.closest("li").classList.contains(this._opt.classNameActive)) {
       tab.closest("li").classList.remove(this._opt.classNameActive);
@@ -81,7 +85,7 @@ Switchy.prototype._activateTab = function (elementTab, triggerOnchange = true) {
   panelActive.hidden = false; // show panel
 
   // save tab reload
-  if (this._opt.remember) {
+  if (updateURL) {
     this._searchParams = new URLSearchParams(location.search);
     this._searchParams.set(
       this._sanitizeQueryParams(this._selector),
