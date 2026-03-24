@@ -22,7 +22,7 @@ function Switchy(selector, option) {
 
   this._opt = Object.assign(
     {
-      classNameActive: "tab--active",
+      classNameActive: "switchy--active",
       remember: true,
       onChange: null,
     },
@@ -138,8 +138,8 @@ Switchy.prototype.destroy = function () {
 
 Switchy.prototype._checkActiveTab = function (tab) {
   if (this._currentTab !== tab) {
-    this._activateTab(tab);
     this._currentTab = tab; // reset current tab
+    this._activateTab(tab);
   }
 };
 

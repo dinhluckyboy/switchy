@@ -3,44 +3,162 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Switchy</title>
+    <title>Switchy Library</title>
     <link rel="stylesheet" href="./src/switchy.css" />
   </head>
   <body>
+    <!-- header  -->
+    <header>
+      <div class="container">
+        <h1 class="title">
+          <a target="_blank" href="https://github.com/dinhluckyboy/switchy"
+            >Switchy.js</a
+          >
+        </h1>
+        <p class="desc">
+          Thư viện nhỏ về chuyển tab được code hoàn toàn bằng Javascript
+        </p>
+      </div>
+    </header>
+    <!-- main  -->
     <main>
-      <!-- tabs  -->
-      <ul id="tabs">
-        <li><a href="#tab1">tab1</a></li>
-        <li><a href="#tab2">tab2</a></li>
-        <li><a href="#tab3">tab3</a></li>
-      </ul>
-      <!-- panels  -->
-      <p id="tab1">Content tab 1</p>
-      <p id="tab2">Content tab 2</p>
-      <p id="tab3">Content tab 3</p>
+      <!-- benefits  -->
+      <section id="benefits">
+        <div class="container">
+          <h2 class="title">1. Lợi ích</h2>
+          <p class="desc">
+            Giúp bạn tạo ra giao diện tabs một cách nhanh chóng, có thể tái sử
+            dụng có nhiều trang web giúp tiết kiệm thời gian
+          </p>
+        </div>
+      </section>
 
-      <ul id="tabs2">
-        <li><a href="#tab21">tab21</a></li>
-        <li><a href="#tab22">tab22</a></li>
-        <li><a href="#tab23">tab23</a></li>
-      </ul>
-      <!-- panels  -->
-      <p id="tab21">Content tab 21</p>
-      <p id="tab22">Content tab 22</p>
-      <p id="tab23">Content tab 23</p>
+      <!-- examples  -->
+      <section id="examples">
+        <div class="container">
+          <h2 class="title">2. Ví dụ</h2>
+
+          <!-- tab horizontal  -->
+          <div class="switchy__tab">
+            <ul class="desc">
+              <li>Demo 1, basic tab</li>
+              <li>Tab dạng ngang, có thể tuỳ chỉnh giao diện</li>
+              <li>Tab sẽ không lưu khi tải lại trang</li>
+            </ul>
+            <!-- tabs  -->
+            <ul id="demo1-tabs">
+              <li><a href="#demo1">Tour</a></li>
+              <li><a href="#demo2">Features</a></li>
+              <li><a href="#demo3">Pricing</a></li>
+            </ul>
+
+            <!-- panel   -->
+            <div id="demo1-panels">
+              <p id="demo1">Tour trekking Tà Năng - Phan Dũng</p>
+              <div id="demo2">
+                <div class="demo1__img">
+                  <img src="./src/img/dong-co.jpg" alt="" />
+                  <img src="./src/img/nature.jpg" alt="" />
+                  <img src="./src/img/rung.jpg" alt="" />
+                  <img src="./src/img/road.jpg" alt="" />
+                </div>
+              </div>
+              <p id="demo3">
+                Giá vé: 3.000.000đ đã bao gồm phí ăn uống, xe đưa đón 2 chiều
+              </p>
+            </div>
+          </div>
+          <!-- tab vertical  -->
+          <div class="switchy__tab">
+            <ul class="desc">
+              <li>Demo 2, persistent tab</li>
+              <li>Tab dạng dọc, có thể tuỳ chỉnh giao diện</li>
+              <li>Tab sẽ được lưu khi tải lại trang</li>
+            </ul>
+            <div class="switchy__row">
+              <!-- tabs  -->
+              <ul id="demo2-tabs">
+                <li><a href="#demo21">Messages</a></li>
+                <li><a href="#demo22">Settings</a></li>
+                <li><a href="#demo23">Languages</a></li>
+                <li><a href="#demo24">Notifications</a></li>
+              </ul>
+
+              <!-- panel   -->
+              <div id="demo2-panels">
+                <p id="demo21">Content messages</p>
+                <p id="demo22">Content setting</p>
+                <p id="demo23">Content languages</p>
+                <p id="demo24">Content notifications</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- usage  -->
+      <section id="usage">
+        <div class="container">
+          <h2 class="title">3. Cách sử dụng</h2>
+          <p class="desc">
+            Dán đoạn mã này để link file css vào phần header của file HTML
+          </p>
+        </div>
+      </section>
     </main>
     <script src="./src/switchy.js"></script>
     <script>
-      const tabs = new Switchy("#tabs", {
-        //   remember: false,
-        onChange: function (data) {
-          console.log(data);
-        },
+      // demo 1
+      const tabs1 = new Switchy("#demo1-tabs", {
+        remember: false,
+        onChange: animatePanels,
       });
+      function animatePanels() {
+        const panels = document.querySelector("#demo1-panels");
+        const panelCurrent = document.querySelector(
+          tabs1._currentTab.getAttribute("href")
+        );
+        const padding =
+          parseInt(getComputedStyle(panels).paddingTop) +
+          parseInt(getComputedStyle(panels).paddingBottom);
+        panels.style.height = padding + panelCurrent.offsetHeight + "px";
+      }
+      animatePanels();
 
-      const tabs2 = new Switchy("#tabs2", {
-        // remember: false,
+      // demo2
+      const tabs2 = new Switchy("#demo2-tabs", {
+        remember: true,
+        onChange: animateTabs,
       });
+      function animateTabs() {
+        // set height activeLine
+        const activeLine = tabs2._container;
+        const activeTab = tabs2._currentTab.closest("li");
+
+        const heightActiveTab = parseInt(
+          getComputedStyle(tabs2._currentTab).height
+        );
+
+        const marginActiveTab = parseInt(
+          getComputedStyle(tabs2._currentTab.closest("li")).marginTop
+        );
+
+        const height = heightActiveTab + marginActiveTab + "px";
+
+        // set
+        activeLine.style.setProperty("--height-active-line", height);
+
+        // set position top
+        const distance =
+          activeTab.getBoundingClientRect().top -
+          activeLine.getBoundingClientRect().top;
+        // set
+        activeLine.style.setProperty(
+          "--pos-active-line",
+          distance - marginActiveTab + "px"
+        );
+      }
+      animateTabs();
     </script>
   </body>
 </html>

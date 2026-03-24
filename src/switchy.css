@@ -1,3 +1,153 @@
-.tab--active {
+:root {
+  /* --pos-active-line: 0px; */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  color: rgb(46, 46, 46);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.container {
+  width: min(900px, 80vw);
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  padding: 30px 0;
+  background-color: #f6f6f6;
+}
+
+section {
+  padding-top: 30px;
+}
+
+/* reset css  */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* css style   */
+.desc {
+  margin-top: 14px;
+}
+
+ul li {
+  margin-top: 8px;
+}
+
+ul.desc li:first-child {
   font-weight: bold;
+  list-style: none;
+}
+
+/* switchy css  */
+
+#demo1-tabs .switchy--active {
+  background-color: #4b4b4b;
+  color: #fff;
+}
+
+.switchy__row {
+  display: flex;
+}
+
+.switchy__tab {
+  margin-top: 14px;
+}
+
+.switchy__tab ul {
+  list-style: inside;
+}
+
+#demo1-tabs {
+  margin-top: 14px;
+  display: flex;
+  list-style: none;
+  border-bottom: 2px solid #cbcbcb;
+}
+
+.demo1__img {
+  display: flex;
+}
+
+.demo1__img img {
+  width: 25%;
+  padding: 2px;
+  object-fit: cover;
+}
+
+#demo1-tabs li {
+  background-color: #f6f6f6;
+}
+
+#demo1-tabs li a {
+  display: inline-block;
+  padding: 12px 28px;
+}
+
+#demo1-panels {
+  margin-top: 14px;
+  background-color: #fff;
+  padding: 14px;
+  -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.31);
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.31);
+  transition: height 0.3s ease;
+}
+
+#demo2-tabs {
+  position: relative;
+  margin-top: 14px;
+  width: min(200px, 30%);
+}
+
+#demo2-tabs::before {
+  position: absolute;
+  transform: translateY(var(--pos-active-line, 0px));
+  left: 0;
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: var(--height-active-line, 0px);
+  background-color: #4b4b4b;
+  transition: transform 0.3s ease, height 0.3s ease;
+}
+
+#demo2-panels {
+  width: min(400px, 70%);
+  margin-top: 14px;
+  background-color: #fff;
+  padding: 20px;
+  margin-left: 12px;
+  -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.31);
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.31);
+}
+
+#demo2-tabs {
+  background-color: #f6f6f6;
+  list-style: none;
+}
+
+#demo2-tabs li a {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 28px;
+  color: rgba(46, 46, 46, 0.7);
+}
+#demo2-tabs li.switchy--active a {
+  color: rgb(46, 46, 46);
 }
