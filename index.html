@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Switchy Library</title>
+    <!-- highlight code pre  -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css"
+      rel="stylesheet"
+    />
+    <!-- css style  -->
     <link rel="stylesheet" href="./src/switchy.css" />
   </head>
   <body>
@@ -100,18 +106,122 @@
       <section id="usage">
         <div class="container">
           <h2 class="title">3. Cách sử dụng</h2>
+          <h3 class="title">Liên kết file từ thư viện</h3>
           <p class="desc">
-            Dán đoạn mã này để link file css vào phần header của file HTML
+            Dán đoạn mã này để link file js vào trước thẻ đóng body của file
+            HTML
           </p>
+          <pre><code class="language-html">&lt;script src=&quot;https://cdn.jsdelivr.net/gh/dinhluckyboy/switchy@version/switchy.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+          <h3 class="title">Khởi tạo Tabs</h3>
+          <p class="desc">Đây là cấu trúc HTML cơ bản để thiết lập Switchy</p>
+          <pre><code class="language-html">&lt;!-- tabs  --&gt;
+            &lt;ul id=&quot;demo-tabs&quot;&gt;
+                   &lt;li&gt;&lt;a href=&quot;#demo1&quot;&gt;tab 1&lt;/a&gt;&lt;/li&gt;
+                   &lt;li&gt;&lt;a href=&quot;#demo2&quot;&gt;tab 2&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+&lt;!-- panel   --&gt;
+              &lt;p id=&quot;demo1&quot;&gt;Content tab 1&lt;/p&gt;
+              &lt;p id=&quot;demo2&quot;&gt;Content tab 2&lt;/p&gt;</code></pre>
+          <p class="desc">Đây là cấu trúc JS cơ bản để khởi tạo Switchy</p>
+          <pre><code class="language-js"> // demo 
+      const tabs = new Switchy(&quot;#demo-tabs&quot;, {
+        classNameActive: &quot;switchy--active&quot;, // css class applied to the active tab
+        remember: false, // remember tabs 
+        onChange: animatePanels, // function after tab active   
+      });
+      function animatePanels() {
+        //something handle...
+      }
+      animatePanels();</code></pre>
+          <p class="desc">Using tabs methods</p>
+          <pre><code class="language-js">// Switch to a specific tab
+      tabs.switch("#demo2");
+
+// Destroy the tab instance
+      tabs.destroy();</code></pre>
+          <h3 class="title">Chú thích về các thuộc tính khởi tạo</h3>
+          <pre><code class="language-js">const tabs = new Switchy(selector, options);</code></pre>
+          <p class="desc">
+            <code>selector</code> là <code>string</code> chứa <code>id</code>
+            <code>tabs</code>
+          </p>
+          <p class="desc">
+            <code>option</code> là object chứa các giá trị
+            <code>classNameActive</code>, <code>remember</code>,
+            <code>onChange</code>
+          </p>
+          <ul>
+            <li>
+              <code>classNameActive</code> có giá trị mặc định là chuỗi
+              <code>"switchy--active"</code>có thể thay đổi được, đây là css
+              class của tab đang được kích hoạt
+            </li>
+            <li>
+              <code>remember</code> có giá trị mặc định là
+              <code>false</code> khi là <code>false</code> tab đang kích hoạt sẽ
+              không được lưu khi tải lại trình duyệt và ngược lại
+            </li>
+            <li>
+              <code>onChange</code> là <code>function</code> được gọi sau khi
+              chuyển tab giúp bạn dễ dàng tuỳ chỉnh phát triển thêm các tính
+              năng mới, giá trị mặc định là <code>null</code>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- api  -->
+      <section id="api">
+        <div class="container">
+          <h2 class="title">4. API</h2>
+          <table class="table">
+            <thead class="table--head">
+              <tr>
+                <th class="table--title">Method</th>
+                <th class="table--title">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>switch(input)</td>
+                <td>
+                  Dùng để chuyển đến một tab cụ thể, <code>input</code> có thể
+                  là <b>selectorPanel</b> (<code>"#demo2"</code>) hoặc
+                  <b>DOM element</b>
+                </td>
+              </tr>
+              <tr>
+                <td>destroy()</td>
+                <td>
+                  Loại bỏ toàn bộ tính năng của Switchy, khôi phục HMTL gốc, huỷ
+                  liên kết các sự kiện
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </main>
+
+    <!-- footer  -->
+    <footer>
+      <div class="container">
+        <p class="desc">
+          Đây là một dự án nhỏ được code hoàn toàn bằng Javascript, tham khảo
+          source dự án tại
+          <a target="_blank" href="https://github.com/dinhluckyboy/switchy"></a>
+          Github >
+        </p>
+      </div>
+    </footer>
+    <!-- highlight code pre  -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
     <script src="./src/switchy.js"></script>
     <script>
       // demo 1
       const tabs1 = new Switchy("#demo1-tabs", {
-        remember: false,
-        onChange: animatePanels,
+        remember: false, // remember tabs
+        onChange: animatePanels, // function after tab active
       });
       function animatePanels() {
         const panels = document.querySelector("#demo1-panels");
@@ -127,8 +237,8 @@
 
       // demo2
       const tabs2 = new Switchy("#demo2-tabs", {
-        remember: true,
-        onChange: animateTabs,
+        remember: true, // remember tabs
+        onChange: animateTabs, // remember tabs
       });
       function animateTabs() {
         // set height activeLine
